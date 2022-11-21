@@ -3,6 +3,8 @@ package com.blog.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class UserController {
 
 	
 	@PostMapping("/")
-	public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
 		UserDto createUserDto = this.userService.createUser(userDto);
 		return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
 	 }
@@ -42,10 +44,13 @@ public class UserController {
 	public ResponseEntity<?> deleteUser(@PathVariable("userId") Integer userId){
 	 String deletedUser = this.userService.deleteUser(userId);
 	 return new ResponseEntity<ApiResponse>(new ApiResponse("User deleted successfully",true),HttpStatus.OK);
-	
-	
-	}
+	 }
 	 
+	@GetMapping("/{userId}")
+	public ResponseEntity<?> getUser(@PathVariable("userId") Integer userId){
+		 UserDto deletedUser = this.userService.getUserById(userId);
+		 return new ResponseEntity<UserDto>(deletedUser,HttpStatus.OK);
+		 }
 	 
 	 
 
